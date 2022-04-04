@@ -16,7 +16,7 @@ Resume：
 python -m torch.distributed.launch --nproc_per_node=2 --use_env src/train.py with deformable tracking VisDrone full_res resume=<your resume model> output_dir=<your output path> epochs=20 lr_drop=10 val_interval=5
 
 Without Checkpoint
-python src/train.py with deformable tracking VisDrone full_res output_dir=models/mot17_train_deformable_public_v4 epochs=40 lr_drop=10 no_vis=True
+python src/train.py with deformable tracking VisDrone full_res output_dir=<your model path> epochs=40 lr_drop=10 no_vis=True
 
 
 3.run Demo
@@ -41,7 +41,7 @@ python src/generate_coco_from_VisDrone_multicls.py  --split_name 'train_coco_ful
 
 
 6.Distrubution mode
-python -m torch.distributed.launch --nproc_per_node=2 --use_env src/train.py with deformable tracking VisDrone full_res resume=models/r50_deformable_detr-checkpoint.pth output_dir=models/mot17_train_deformable_public_v14 epochs=20 lr_drop=10
+python -m torch.distributed.launch --nproc_per_node=2 --use_env src/train.py with deformable tracking VisDrone full_res resume=models/r50_deformable_detr-checkpoint.pth output_dir=<your model path> epochs=20 lr_drop=10
 
 
 7.Open visdom
@@ -49,7 +49,8 @@ python -m visdom.server -p 8090
 
 
 8.Eval only
-python -m torch.distributed.launch --nproc_per_node=2 --use_env src/train.py with deformable tracking VisDrone full_res resume=models/mot17_train_deformable_public_v11/checkpoint.pth output_dir=models/mot17_train_deformable_public_v11 eval_only=True
+pythonsrc/train.py with deformable tracking VisDrone full_res resume=<your model path> output_dir=<your output path> eval_only=True
+
 
 
 ignored_seqs = ['uav0000013_00000_v', 'uav0000013_01073_v', 'uav0000013_01392_v', 'uav0000020_00406_v', 'uav0000071_03240_v', 'uav0000072_04488_v', 'uav0000072_05448_v', 'uav0000072_06432_v', 'uav0000079_00480_v', 'uav0000084_00000_v', 'uav0000099_02109_v', ] 
