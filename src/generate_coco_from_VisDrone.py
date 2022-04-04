@@ -164,7 +164,7 @@ def generate_coco_from_visdrone(split_name='train', seqs_names=None,
             reader = csv.reader(gt_file, delimiter=',') # 读取GT文件
 
             for row in reader:
-                if row[6] == '1' and row[7] in ['4', '5', '6', '9']:  # score部分为1,评估时考虑边界框 并且目标的类别为车辆
+                if row[6] == '1' and row[7] in ['4']:  # score部分为1,评估时考虑边界框 并且目标的类别为车辆
                 
                     bbox = [float(row[2]),float(row[3]),float(row[4]),float(row[5])] # 读取边界框 
                     bbox = [int(c) for c in bbox] # 转换为int
