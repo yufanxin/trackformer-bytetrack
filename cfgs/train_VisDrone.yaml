@@ -1,0 +1,11 @@
+dataset: VisDrone
+train_split: train_coco_testt
+# val_split: train_coco_val
+val_split: train_coco_testt
+lr: 0.0001
+lr_backbone: 0.00001
+
+epochs: 20
+lr_drop: 20
+
+num_queries: 200 # less than MOT
