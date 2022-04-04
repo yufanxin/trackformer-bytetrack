@@ -9,27 +9,19 @@ python src/train.py with deformable tracking mot17 full_res resume=models/crowdh
 
 
 2.train VisDrone
-public detection:
-python src/train.py with deformable tracking VisDrone full_res resume=models/r50_deformable_detr-checkpoint.pth output_dir=models/mot17_train_deformable_public_fullcat epochs=40 lr_drop=10 val_interval=1 tracking=False
 
-Resume public detection:
-python -m torch.distributed.launch --nproc_per_node=2 --use_env src/train.py with deformable tracking VisDrone full_res resume=models/mot17_train_deformable_public_v11/checkpoint.pth output_dir=models/mot17_train_deformable_public_v11 epochs=20 lr_drop=10 val_interval=5
+python src/train.py with deformable tracking VisDrone full_res resume=models/r50_deformable_detr-checkpoint.pth output_dir=<your output path> epochs=40 lr_drop=10 
 
-
-
-private detection:
-python src/train.py with deformable tracking VisDrone full_res resume=models/crowdhuman_train_val_deformable/checkpoint.pth output_dir=models/mot17_train_deformable_private_v4 no_vis=True
+Resume：
+python -m torch.distributed.launch --nproc_per_node=2 --use_env src/train.py with deformable tracking VisDrone full_res resume=<your resume model> output_dir=<your output path> epochs=20 lr_drop=10 val_interval=5
 
 Without Checkpoint
 python src/train.py with deformable tracking VisDrone full_res output_dir=models/mot17_train_deformable_public_v4 epochs=40 lr_drop=10 no_vis=True
 
 
-***add***: tracking=False val_interval=5
-
-
-
 3.run Demo
 python src/track.py with dataset_name=DEMO data_root_dir=data/mydemo2 output_dir=data/mydemo2 write_images=pretty
+
 
 4.track MOT17
 public detections:
@@ -37,6 +29,7 @@ python src/track.py with reid
 
 private detections:
 python src/track.py with reid public_detections=min_iou_0_5 obj_detect_checkpoint_file=models/mots20_train_masks/checkpoint.pth
+
 
 5.generate VisDrone COCO:
 python src/generate_coco_from_VisDrone.py  --split_name 'train_coco_test' --root_split 'VisDrone2019-MOT-test-dev' 
@@ -46,18 +39,17 @@ python src/generate_coco_from_VisDrone.py  --split_name 'train_coco_all' --root_
 multi class:
 python src/generate_coco_from_VisDrone_multicls.py  --split_name 'train_coco_fullcat' --root_split 'VisDrone2019-MOT-train'  
 
+
 6.Distrubution mode
 python -m torch.distributed.launch --nproc_per_node=2 --use_env src/train.py with deformable tracking VisDrone full_res resume=models/r50_deformable_detr-checkpoint.pth output_dir=models/mot17_train_deformable_public_v14 epochs=20 lr_drop=10
+
 
 7.Open visdom
 python -m visdom.server -p 8090
 
+
 8.Eval only
 python -m torch.distributed.launch --nproc_per_node=2 --use_env src/train.py with deformable tracking VisDrone full_res resume=models/mot17_train_deformable_public_v11/checkpoint.pth output_dir=models/mot17_train_deformable_public_v11 eval_only=True
-
-CUDA_VISIBLE_DEVICES=1 python src/train.py with deformable tracking VisDrone full_res resume=models/mot17_train_deformable_public_v11_/checkpoint.pth output_dir=models/mot17_train_deformable_public_v11_ eval_only=True
-
-CUDA_VISIBLE_DEVICES=1 python src/train.py with deformable tracking VisDrone full_res resume=models/r50_deformable_detr-checkpoint.pth output_dir=models/mot17_train_deformable_public_fullcat epochs=40 lr_drop=10 val_interval=1 tracking=False
 
 
 ignored_seqs = ['uav0000013_00000_v', 'uav0000013_01073_v', 'uav0000013_01392_v', 'uav0000020_00406_v', 'uav0000071_03240_v', 'uav0000072_04488_v', 'uav0000072_05448_v', 'uav0000072_06432_v', 'uav0000079_00480_v', 'uav0000084_00000_v', 'uav0000099_02109_v', ] 
