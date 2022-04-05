@@ -1,6 +1,11 @@
 ## TrackFormer + ByteTrack with VisDrone2019-MOT dataset
 
+
+
 This is a repo that combines [TrackFormer](https://arxiv.org/abs/2101.02702) and [ByteTrack](https://arxiv.org/abs/2110.06864), the code is built on [TrackFormer](https://github.com/timmeinhardt/trackformer). 
+
+
+![gif](https://github.com/JackWoo0831/trackformer-bytetrack/blob/master/imgs/Untitled.gif)
 
 The code can reach **50.3% MOTA and 66.2% IDF1** on VisDrone2019-MOT test  dataset, and can track object more stable compared to the model without ByteTrack:    
 (The x axis is detection high thresh, = 0.4:0.1:0.9. 
