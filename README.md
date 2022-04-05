@@ -15,7 +15,10 @@ when the high thresh=0.6 the model reaches the best result.
 
 ***training details:*** I trained based on the pretrained model of Deformable DETR(r50_deformable_detr-checkpoint.pth) with 28 Epochs on 2 Tesla A100 GPUs and test on single A100 GPU. The initial lr is 1e-4 and 1e-5 of backbone. Optimizer is AdamW.
 
-****The model will be uploaded soon.****
+****model:**** Baidu Disk Link：https://pan.baidu.com/s/1fxzryW5NT3TEZL1XOX9XoQ 
+code：zx0w
+
+
 
 
 ----
