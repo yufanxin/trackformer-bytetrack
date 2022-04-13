@@ -12,7 +12,8 @@ The code can reach **50.3% MOTA and 66.2% IDF1** on VisDrone2019-MOT test  datas
 In ByteTrack mode, I choose the low thresh = 0.5 and when the high thresh = 0.5 the low thresh = 0.4).
 
 when the high thresh=0.6 the model reaches the best result.
- 
+
+
  
 
 ![MOTA](https://github.com/JackWoo0831/trackformer-bytetrack/blob/master/imgs/MOTA.png)
@@ -20,17 +21,15 @@ when the high thresh=0.6 the model reaches the best result.
 
 ***training details:*** I trained based on the pretrained model of Deformable DETR(r50_deformable_detr-checkpoint.pth) with 28 Epochs on 2 Tesla A100 GPUs and test on single A100 GPU. The initial lr is 1e-4 and 1e-5 of backbone. Optimizer is AdamW.
 
-****model:**** Baidu Disk Link：https://pan.baidu.com/s/1fxzryW5NT3TEZL1XOX9XoQ 
+****model(single class):**** Baidu Disk Link：https://pan.baidu.com/s/1fxzryW5NT3TEZL1XOX9XoQ 
 code：zx0w
+model for multi-class will be uploaded after I reach a nice performance.
 
 
+**for multi-class MOT**, by now I reach **33.5MOTA and 50.3IDF1** on test dataset in 20 epochs, I'm trying to reach a better performance. Please check the new file in commits.
+![gif](https://github.com/JackWoo0831/trackformer-bytetrack/blob/master/imgs/wUntitled.gif)
 
 
-----
-**TODO:**  
-Now I'm trying multi-classes MOT on this code.
-
-----
 1. Installation:  
     The way to install is same as [TrackFormer Installation](https://github.com/timmeinhardt/trackformer/blob/main/docs/INSTALL.md)
 
