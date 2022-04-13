@@ -21,15 +21,19 @@ when the high thresh=0.6 the model reaches the best result.
 
 ***training details:*** I trained based on the pretrained model of Deformable DETR(r50_deformable_detr-checkpoint.pth) with 28 Epochs on 2 Tesla A100 GPUs and test on single A100 GPU. The initial lr is 1e-4 and 1e-5 of backbone. Optimizer is AdamW.
 
-****model(single class):**** Baidu Disk Link：https://pan.baidu.com/s/1fxzryW5NT3TEZL1XOX9XoQ 
-code：zx0w
-model for multi-class will be uploaded after I reach a nice performance.
+****model(single class):**** Baidu Disk Link：https://pan.baidu.com/s/1fxzryW5NT3TEZL1XOX9XoQ  
 
+code：zx0w  
 
-**for multi-class MOT**, by now I reach **33.5MOTA and 50.3IDF1** on test dataset in 20 epochs, I'm trying to reach a better performance. Please check the new file in commits.
+model for multi-class will be uploaded after I reach a nice performance.  
+
+****
+
+**for multi-class MOT**, by now I reach **33.5MOTA and 50.3IDF1** on test dataset in 20 epochs, I'm trying to reach a better performance. Please check the new file in commits.  demo:
+
 ![gif](https://github.com/JackWoo0831/trackformer-bytetrack/blob/master/imgs/wUntitled.gif)
 
-
+****
 1. Installation:  
     The way to install is same as [TrackFormer Installation](https://github.com/timmeinhardt/trackformer/blob/main/docs/INSTALL.md)
 
@@ -63,8 +67,23 @@ model for multi-class will be uploaded after I reach a nice performance.
 	**Or** you can continue train on my model:
    ```python
    python src/train.py with deformable tracking VisDrone full_res resume=models/checkpoint.pth output_dir=<your output path> epochs=40 lr_drop=10 
-   ```	
-
+   ```	 
+   
+    **Train for mulci-class MOT**, you should generate a multi-class annotations: such as  
+	
+   ```python
+   python src/generate_coco_from_VisDrone_multicls.py  --split_name 'train_coco_all' --root_split 'VisDrone2019-MOT-train' 
+   ```  
+   
+   	and **modify** the num_class in line 16: func build_model():  
+	
+	
+   ```python
+   elif args.dataset=='VisDrone':# Edited
+	# num_classes=1
+	num_classes=4
+   ```
+   
 3. Evaluate on VisDrone-2019 MOT:  
 	run:  
    ```python
