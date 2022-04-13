@@ -13,6 +13,11 @@ from .util.plot_utils import fig_to_numpy
 
 logging.getLogger('visdom').setLevel(logging.CRITICAL)
 
+classname_dict = {0: "car",
+                  1: "van",
+                  2: "truck",
+                  3: "bus"}
+
 
 class BaseVis(object):
 
@@ -71,7 +76,7 @@ class LineVis(BaseVis):
         self.viz.save([self.viz.env])
 
     def reset(self):
-        #TODO: currently reset does not empty directly only on the next plot.
+        # TODO: currently reset does not empty directly only on the next plot.
         # update='remove' is not working as expected.
         if self.win is not None:
             # self.viz.line(X=None, Y=None, win=self.win, update='remove')
@@ -138,6 +143,11 @@ def vis_results(visualizer, img, result, target, tracking):
 
     keep = result['scores'].cpu() > result['scores_no_object'].cpu()
 
+    labels_for_vis = result['labels'].tolist()  # list for vis
+
+    print(labels_for_vis)
+    # exit()
+
     cmap = plt.cm.get_cmap('hsv', len(keep))
 
     prop_i = 0
@@ -149,13 +159,19 @@ def vis_results(visualizer, img, result, target, tracking):
         rect_color = 'green'
         offset = 0
         text = f"{result['scores'][box_id]:0.2f}"
+
+        class_name = classname_dict[labels_for_vis[box_id]]  # Edited show class name
+
         if mask_value == 1:
             offset = 50
             rect_color = 'blue'
             text = (
+                # f"{class_name}\n"
+                f"{class_name}\n"  # Edited show class name
                 f"{track_ids[prop_i]}\n"
                 f"{text}\n"
-                f"{result['track_queries_with_id_iou'][prop_i]:0.2f}")
+                f"{result['track_queries_with_id_iou'][prop_i]:0.2f}"
+            )
             prop_i += 1
         elif mask_value == -1:
             rect_color = 'red'
