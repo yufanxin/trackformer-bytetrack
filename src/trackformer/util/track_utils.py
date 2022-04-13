@@ -20,6 +20,11 @@ from scipy.interpolate import interp1d
 
 matplotlib.use('Agg')
 
+classname_dict = {0: "car",
+                  1: "van",
+                  2: "truck",
+                  3: "bus"}
+
 
 # From frcnn/utils/bbox.py
 def bbox_overlaps(boxes, query_boxes):
@@ -66,9 +71,8 @@ def rand_cmap(nlabels, type='bright', first_color_black=True, last_color_black=F
     import numpy as np
     from matplotlib.colors import LinearSegmentedColormap
 
-
     if type not in ('bright', 'soft'):
-        print ('Please choose "bright" or "soft" for type')
+        print('Please choose "bright" or "soft" for type')
         return
 
     if verbose:
@@ -152,9 +156,9 @@ def plot_sequence(tracks, data_loader, output_dir, write_images, generate_attent
     #         track_id: np.histogram(maps, bins=2)[1][1]
     #         for track_id, maps in attention_maps_per_track.items()}
 
-        # _, attention_maps_bin_edges = np.histogram(all_attention_maps, bins=2)
+    # _, attention_maps_bin_edges = np.histogram(all_attention_maps, bins=2)
 
-    for frame_id, frame_data  in enumerate(tqdm.tqdm(data_loader)):
+    for frame_id, frame_data in enumerate(tqdm.tqdm(data_loader)):
         img_path = frame_data['img_path'][0]
         img = cv2.imread(img_path)[:, :, (2, 1, 0)]
         height, width, _ = img.shape
@@ -192,12 +196,19 @@ def plot_sequence(tracks, data_loader, output_dir, write_images, generate_attent
                         ))
 
                     annotate_color = cmap(track_id)
-
+                cat_name = classname_dict[int(track_data[frame_id]['label'])]
                 if write_images == 'debug':
                     ax.annotate(
                         f"{track_id} ({track_data[frame_id]['score']:.2f})",
                         (bbox[0] + (bbox[2] - bbox[0]) / 2.0, bbox[1] + (bbox[3] - bbox[1]) / 2.0),
                         color=annotate_color, weight='bold', fontsize=12, ha='center', va='center')
+
+                elif write_images == 'multi_cls':  # Edited show class name
+                    ax.annotate(
+                        f"{track_id} ({cat_name})",
+                        (bbox[0] + (bbox[2] - bbox[0]) / 2.0, bbox[1] + (bbox[3] - bbox[1]) / 2.0),
+                        color=annotate_color, weight='bold', fontsize=10, ha='center', va='center')
+
 
                 if 'attention_map' in track_data[frame_id]:
                     attention_map = track_data[frame_id]['attention_map']
@@ -216,7 +227,7 @@ def plot_sequence(tracks, data_loader, output_dir, write_images, generate_attent
 
                     norm_attention_map = attention_map / attention_map.max()
 
-                    high_att_mask = norm_attention_map > 0.25 # bin_edges[1]
+                    high_att_mask = norm_attention_map > 0.25  # bin_edges[1]
                     attention_map_img[:, :][high_att_mask] = cmap(track_id)
                     attention_map_img[:, :, 3][high_att_mask] = norm_attention_map[high_att_mask] * 0.5
 
@@ -290,9 +301,9 @@ def bbox_transform_inv(boxes, deltas):
 
     pred_boxes = torch.cat(
         [_.unsqueeze(2) for _ in [pred_ctr_x - 0.5 * pred_w,
-                                pred_ctr_y - 0.5 * pred_h,
-                                pred_ctr_x + 0.5 * pred_w,
-                                pred_ctr_y + 0.5 * pred_h]], 2).view(len(boxes), -1)
+                                  pred_ctr_y - 0.5 * pred_h,
+                                  pred_ctr_x + 0.5 * pred_w,
+                                  pred_ctr_y + 0.5 * pred_h]], 2).view(len(boxes), -1)
     return pred_boxes
 
 
@@ -405,10 +416,10 @@ def evaluate_mot_accums(accums, names, generate_overall=True):
         accums,
         metrics=mm.metrics.motchallenge_metrics,
         names=names,
-        generate_overall=generate_overall,)
+        generate_overall=generate_overall, )
 
     str_summary = mm.io.render_summary(
         summary,
         formatters=mh.formatters,
-        namemap=mm.io.motchallenge_metric_names,)
+        namemap=mm.io.motchallenge_metric_names, )
     return summary, str_summary
