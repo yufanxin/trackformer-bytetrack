@@ -57,10 +57,10 @@ def generate_coco_from_visdrone(split_name='train', seqs_names=None,
     annotations['type'] = 'instances'
     annotations['images'] = []  # 图像集合
     # 类别 超类是vehicle 由于此处不作检测分类 故name不加区分
-    annotations['categories'] = [{"supercategory": "vehicle", "name": "car", "id": 4},
-                                 {"supercategory": "vehicle", "name": "van", "id": 5},
-                                 {"supercategory": "vehicle", "name": "truck", "id": 6},
-                                 {"supercategory": "vehicle", "name": "bus", "id": 9}]
+    annotations['categories'] = [{"supercategory": "vehicle", "name": "car", "id": 1},
+                                 {"supercategory": "vehicle", "name": "van", "id": 2},
+                                 {"supercategory": "vehicle", "name": "truck", "id": 3},
+                                 {"supercategory": "vehicle", "name": "bus", "id": 4}]
 
     # 注意 原始Visdrone数据集标注的分类有12类
     '''annotations['categories'] = [
