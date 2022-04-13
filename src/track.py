@@ -16,6 +16,7 @@ from trackformer.datasets.tracking import TrackDatasetFactory
 from trackformer.models import build_model
 from trackformer.models.tracker import Tracker
 from trackformer.models.byte_tracker import BYTETracker
+from trackformer.models.byte_tracker_multicls import  BYTETracker_mulcls
 from trackformer.util.misc import nested_dict_to_namespace
 from trackformer.util.track_utils import (evaluate_mot_accums, get_mot_accum,
                                           interpolate_tracks, plot_sequence)
@@ -102,10 +103,16 @@ def main(seed, dataset_name, obj_detect_checkpoint_file, tracker_cfg,
         track_logger = _log.info
 
     bytetrack = True  # whether you use bytetrack
+    mulcls = True  # whether a multi-cls MOT
     if bytetrack:
-        tracker = BYTETracker(
-            obj_detector, obj_detector_post, tracker_cfg, generate_attention_maps, track_logger
-        )
+        if not mulcls:
+            tracker = BYTETracker(
+                obj_detector, obj_detector_post, tracker_cfg, generate_attention_maps, track_logger
+            )
+        else:
+            tracker = BYTETracker_mulcls(
+                obj_detector, obj_detector_post, tracker_cfg, generate_attention_maps, track_logger
+            )
     else:
         tracker = Tracker(
             obj_detector, obj_detector_post, tracker_cfg, generate_attention_maps, track_logger
